@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
+	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -15,7 +17,15 @@ func galleryHandler(w http.ResponseWriter, r *http.Request) {
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, "Welcome to website")
+	tplPath := filepath.Join("templates", "home.gohtml")
+	tpl, err := template.ParseFiles(tplPath)
+	if err != nil {
+		panic(err)
+	}
+	err = tpl.Execute(w, nil)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
