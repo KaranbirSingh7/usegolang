@@ -50,15 +50,21 @@ func faqHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := chi.NewRouter()
 
+	// log incoming requests
 	r.Use(middleware.Logger)
 
+	// handle known routes
 	r.Get("/", homeHandler)
 	r.Get("/contact", contactHandler)
 	r.Get("/faq", faqHandler)
 	r.Get("/gallery/{userID}", galleryHandler)
+
+	// hanlde unknown routes
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	})
+
+	// start server
 	fmt.Println("Server starting on :3000")
 	http.ListenAndServe(":3000", r)
 }
