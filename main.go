@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/karanbirsingh7/usegolang/controllers"
 	"github.com/karanbirsingh7/usegolang/views"
 )
 
@@ -25,30 +26,32 @@ func galleryHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Passed value: %v", id)
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "home.gohtml")
-	executeTemplate(w, tplPath)
-}
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "contact.gohtml")
-	executeTemplate(w, tplPath)
-}
-func faqHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "faq.gohtml")
-	executeTemplate(w, tplPath)
-}
-
 func main() {
-	r := chi.NewRouter()
 
+	r := chi.NewRouter()
 	// log incoming requests
 	r.Use(middleware.Logger)
 
-	// handle known routes
-	r.Get("/", homeHandler)
-	r.Get("/contact", contactHandler)
-	r.Get("/faq", faqHandler)
+	// parse templates
+
+	tpl, err := views.Parse(filepath.Join("templates", "faq.gohtml"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/faq", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "home.gohtml"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/contact", controllers.StaticHandler(tpl))
+
 	r.Get("/gallery/{userID}", galleryHandler)
 
 	// hanlde unknown routes
