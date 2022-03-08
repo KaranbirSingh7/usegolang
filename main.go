@@ -3,23 +3,13 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/karanbirsingh7/usegolang/controllers"
+	"github.com/karanbirsingh7/usegolang/templates"
 	"github.com/karanbirsingh7/usegolang/views"
 )
-
-func executeTemplate(w http.ResponseWriter, filepath string) {
-	t, err := views.Parse(filepath)
-	if err != nil {
-		http.Error(w, "There was an error parsing template.", http.StatusInternalServerError)
-		return
-	}
-
-	t.Execute(w, nil)
-}
 
 func galleryHandler(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "userID")
@@ -34,22 +24,13 @@ func main() {
 
 	// parse templates
 
-	tpl, err := views.Parse(filepath.Join("templates", "faq.gohtml"))
-	if err != nil {
-		panic(err)
-	}
+	tpl := views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
 	r.Get("/faq", controllers.StaticHandler(tpl))
 
-	tpl, err = views.Parse(filepath.Join("templates", "home.gohtml"))
-	if err != nil {
-		panic(err)
-	}
+	tpl = views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(tpl))
 
-	tpl, err = views.Parse(filepath.Join("templates", "contact.gohtml"))
-	if err != nil {
-		panic(err)
-	}
+	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
 	r.Get("/gallery/{userID}", galleryHandler)
