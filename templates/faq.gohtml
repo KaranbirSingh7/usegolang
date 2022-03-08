@@ -1,1 +1,11 @@
 <h3> FAQs </h3>
+
+<ul>
+    {{range .}}
+        {{ template "qa" .}}
+    {{end}}
+</ul>
+
+{{define "qa"}}
+<li><b>{{.Question}}</b> {{.Answer}}</li>
+{{end}}

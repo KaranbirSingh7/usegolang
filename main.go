@@ -25,7 +25,7 @@ func main() {
 	// parse templates
 
 	tpl := views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
-	r.Get("/faq", controllers.StaticHandler(tpl))
+	r.Get("/faq", controllers.FAQs(tpl))
 
 	tpl = views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(tpl))
