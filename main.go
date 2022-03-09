@@ -24,13 +24,13 @@ func main() {
 
 	// parse templates
 
-	tpl := views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
+	tpl := views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "faq.gohtml"))
 	r.Get("/faq", controllers.FAQs(tpl))
 
-	tpl = views.Must(views.ParseFS(templates.FS, "home.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(tpl))
 
-	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
 	r.Get("/gallery/{userID}", galleryHandler)

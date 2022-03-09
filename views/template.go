@@ -42,8 +42,8 @@ func Parse(filepath string) (Template, error) {
 }
 
 // take file system embed as input and filepath, returns Template
-func ParseFS(fs fs.FS, filepath string) (Template, error) {
-	tpl, err := template.ParseFS(fs, filepath)
+func ParseFS(fs fs.FS, filepath ...string) (Template, error) {
+	tpl, err := template.ParseFS(fs, filepath...)
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template: %w", err)
 	}
