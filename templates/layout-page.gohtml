@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="min-h-screen bg-gray-100">
   {{template "navigation-bar"}}
   <div class="px-6"> 
     {{template "page" .}}
@@ -26,7 +26,7 @@
       </div>
       <div>
         <a class="pr-4" href="#">Sign In</a>
-        <a class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded" href="#">Sign Up</a>
+        <a class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded" href="/signup">Sign Up</a>
       </div>
     </nav>
   </header>

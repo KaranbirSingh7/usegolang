@@ -33,6 +33,9 @@ func main() {
 	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
+	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "signup.gohtml"))
+	r.Get("/signup", controllers.StaticHandler(tpl))
+
 	r.Get("/gallery/{userID}", galleryHandler)
 
 	// hanlde unknown routes
