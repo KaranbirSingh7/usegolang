@@ -20,7 +20,7 @@ func FAQs(tpl views.Template) http.HandlerFunc {
 	}{
 		{
 			Question: "Is there a free version?",
-			Answer:   "Yes we do offer 30 days trail",
+			Answer:   "Yes we do offer 30 days trial",
 		},
 		{
 			Question: "What's your support hours?",
