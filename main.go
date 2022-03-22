@@ -33,8 +33,10 @@ func main() {
 	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
-	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "signup.gohtml"))
-	r.Get("/signup", controllers.StaticHandler(tpl))
+	// controller
+	usersC := controllers.Users{}
+	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "signup.gohtml"))
+	r.Get("/signup", usersC.New)
 
 	r.Get("/gallery/{userID}", galleryHandler)
 
