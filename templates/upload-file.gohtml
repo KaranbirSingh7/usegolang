@@ -1,0 +1,9 @@
+{{ define "page" }}
+<form method="post" enctype="multipart/form-data" action="/upload/new" >
+<label for="avatar">Choose a profile picture:</label>
+<input type="file"
+       id="avatar" name="avatar"
+       accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+<button type="submit">Submit</button>
+</form>
+{{end}}

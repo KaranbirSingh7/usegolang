@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -14,6 +17,28 @@ import (
 func galleryHandler(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "userID")
 	fmt.Fprintf(w, "Passed value: %v", id)
+}
+
+//TMP test func for  file upload scenario
+func handleUpload(w http.ResponseWriter, r *http.Request) {
+	file, fileHandler, err := r.FormFile("avatar")
+	defer file.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	f, err := os.OpenFile("./uploaded/"+fileHandler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+	defer f.Close()
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Unable to save file", http.StatusInternalServerError)
+		return
+	}
+
+	io.Copy(f, file)
+	log.Println("file saved locally as:", fileHandler.Filename)
+	fmt.Fprintf(w, "file uploaded onto server")
 }
 
 func main() {
@@ -33,6 +58,9 @@ func main() {
 	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
+	tpl = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "upload-file.gohtml"))
+	r.Get("/upload", controllers.StaticHandler(tpl))
+	r.Post("/upload/new", handleUpload)
 	// controller
 	usersC := controllers.Users{}
 	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "signup.gohtml"))
